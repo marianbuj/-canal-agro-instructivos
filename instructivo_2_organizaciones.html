@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instructivo 2 · Cómo cargar una Organización · Canal Agro</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --green-dark: #0A3D2B;
+    --green-mid: #1A6B47;
+    --green-bright: #2ECC87;
+    --green-pale: #E8F7F0;
+    --amber: #F5A623;
+    --amber-pale: #FEF6E4;
+    --ink: #1C1C1C;
+    --ink-mid: #4A4A4A;
+    --ink-light: #8A8A8A;
+    --paper: #FAFAF7;
+    --paper-warm: #F3F0E8;
+    --border: #E2DDD4;
+    --step-size: 40px;
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); }
+
+  .header { background: var(--green-dark); padding: 32px 40px 28px; position: relative; overflow: hidden; }
+  .header::after { content: ''; position: absolute; right: -60px; top: -60px; width: 260px; height: 260px; border-radius: 50%; border: 40px solid rgba(46,204,135,0.08); }
+  .header-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--green-bright); margin-bottom: 10px; }
+  .header h1 { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 600; color: #fff; line-height: 1.2; max-width: 500px; position: relative; z-index: 1; }
+  .header h1 em { font-style: italic; color: var(--green-bright); }
+  .header-sub { margin-top: 8px; font-size: 13px; color: rgba(255,255,255,0.5); position: relative; z-index: 1; }
+
+  .banner { background: var(--amber-pale); border-left: 4px solid var(--amber); padding: 14px 40px; font-size: 13px; color: var(--ink-mid); display: flex; align-items: center; gap: 10px; }
+  .banner strong { color: var(--ink); }
+
+  .main { max-width: 720px; margin: 0 auto; padding: 40px 24px 60px; }
+  .section-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 20px; }
+
+  .flow { display: flex; align-items: center; gap: 4px; margin-bottom: 8px; flex-wrap: wrap; }
+  .flow-box { background: #fff; border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 16px; font-size: 12px; font-weight: 500; color: var(--ink-mid); text-align: center; line-height: 1.3; min-width: 100px; }
+  .flow-box.done { background: var(--green-pale); color: var(--green-mid); border-color: #B8E8D4; }
+  .flow-box.active { background: var(--green-dark); color: #fff; border-color: var(--green-dark); }
+  .flow-box.future { background: #fff; color: var(--ink-light); border-color: var(--border); }
+  .flow-arrow { color: var(--border); font-size: 18px; padding: 0 2px; }
+
+  .diagram-wrap { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 12px; }
+  .diagram-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 16px; }
+
+  .steps { display: flex; flex-direction: column; }
+  .step { display: grid; grid-template-columns: var(--step-size) 1fr; gap: 0 20px; }
+  .step-left { display: flex; flex-direction: column; align-items: center; }
+  .step-num { width: var(--step-size); height: var(--step-size); border-radius: 50%; background: var(--green-dark); color: #fff; font-family: 'DM Mono', monospace; font-size: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; position: relative; z-index: 1; }
+  .step-line { width: 2px; flex: 1; background: var(--border); }
+  .step:last-child .step-line { display: none; }
+  .step-content { padding-bottom: 32px; }
+  .step-title { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 600; color: var(--ink); margin-bottom: 6px; padding-top: 8px; line-height: 1.3; }
+  .step-desc { font-size: 14px; color: var(--ink-mid); line-height: 1.6; margin-bottom: 14px; }
+
+  .fields { background: #fff; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 12px; }
+  .fields-header { background: var(--paper-warm); padding: 8px 16px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); border-bottom: 1px solid var(--border); }
+  .field-row { display: grid; grid-template-columns: 160px 1fr; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .field-row:last-child { border-bottom: none; }
+  .field-name { padding: 10px 16px; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--green-mid); background: var(--green-pale); border-right: 1px solid var(--border); display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+  .field-val { padding: 10px 16px; color: var(--ink-mid); line-height: 1.5; }
+  .req { display: inline-block; background: var(--green-dark); color: #fff; font-family: 'DM Mono', monospace; font-size: 9px; padding: 2px 6px; border-radius: 3px; text-transform: uppercase; }
+  .opt { display: inline-block; background: var(--border); color: var(--ink-light); font-family: 'DM Mono', monospace; font-size: 9px; padding: 2px 6px; border-radius: 3px; text-transform: uppercase; }
+  .skip { display: inline-block; background: #FFE8E8; color: #C0392B; font-family: 'DM Mono', monospace; font-size: 9px; padding: 2px 6px; border-radius: 3px; text-transform: uppercase; }
+
+  .note { background: var(--amber-pale); border: 1px solid #F5D48A; border-radius: 10px; padding: 14px 18px; font-size: 13px; color: var(--ink-mid); line-height: 1.6; display: flex; gap: 12px; align-items: flex-start; margin-top: 12px; }
+  .note-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .alert { background: #FFF0F0; border: 1px solid #FFBBBB; border-radius: 10px; padding: 14px 18px; font-size: 13px; color: var(--ink-mid); line-height: 1.6; display: flex; gap: 12px; align-items: flex-start; margin-top: 12px; }
+
+  /* DIRECCIONES */
+  .dir-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  .dir-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .dir-card-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 8px; }
+  .dir-card p { font-size: 13px; color: var(--ink-mid); line-height: 1.5; }
+  .dir-card .where { font-size: 12px; color: var(--green-mid); font-family: 'DM Mono', monospace; margin-top: 8px; }
+
+  /* NOTA ENTREGA */
+  .note-example { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; margin-top: 12px; }
+  .note-example-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 10px; }
+  .note-example p { font-size: 13px; color: var(--ink-mid); line-height: 1.6; font-style: italic; }
+
+  .rule-card { background: var(--green-dark); border-radius: 12px; padding: 24px 28px; color: #fff; margin-top: 8px; }
+  .rule-card h3 { font-family: 'Fraunces', serif; font-size: 16px; font-weight: 600; color: var(--green-bright); margin-bottom: 14px; }
+  .rule-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .rule-list li { display: flex; gap: 10px; font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.8); }
+  .rule-list li::before { content: '→'; color: var(--green-bright); flex-shrink: 0; font-family: 'DM Mono', monospace; }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+  .doc-nav { display: flex; gap: 8px; margin-bottom: 32px; flex-wrap: wrap; }
+  .doc-pill { padding: 6px 14px; border-radius: 20px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; border: 1.5px solid; }
+  .doc-pill.done { background: var(--green-pale); color: var(--green-mid); border-color: #B8E8D4; }
+  .doc-pill.current { background: var(--green-dark); color: #fff; border-color: var(--green-dark); }
+  .doc-pill.next { background: transparent; color: var(--ink-light); border-color: var(--border); }
+
+  .footer { text-align: center; padding: 24px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: var(--ink-light); border-top: 1px solid var(--border); }
+
+  /* SECTOR PILLS */
+  .sector-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .sector-pill { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; border: 1.5px solid var(--border); color: var(--ink-mid); background: #fff; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">Canal Agro · Torian Group · Instructivo 2 de 3</div>
+  <h1>Cómo cargar una<br><em>Organización</em> en Pipedrive</h1>
+  <div class="header-sub">Para Georgina · Módulo Contactos · Actualizado junio 2026</div>
+</div>
+
+<div class="banner">
+  <span>💡</span>
+  <span><strong>¿Qué es una Organización?</strong> Es la ficha del cliente — la empresa en sí. Todos los pedidos, notas e historial de ese cliente viven ahí. Se crea una sola vez y se usa siempre.</span>
+</div>
+
+<div class="main">
+
+  <div class="doc-nav">
+    <span class="doc-pill done">1 · Prospectos ✓</span>
+    <span class="doc-pill current">2 · Organizaciones</span>
+    <span class="doc-pill next">3 · Tratos y pedidos</span>
+  </div>
+
+  <div class="section-label">Dónde vivís en este instructivo</div>
+  <div class="diagram-wrap">
+    <div class="diagram-title">Flujo completo Canal Agro</div>
+    <div class="flow">
+      <div class="flow-box done">Prospecto<br><span style="font-size:10px">Investigás</span></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-box active">Organización<br><span style="font-size:10px">Se convierte</span></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-box future">Trato<br><span style="font-size:10px">Pedido real</span></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-box future">Cobrado<br><span style="font-size:10px">Cerrado</span></div>
+    </div>
+  </div>
+
+  <div class="alert" style="margin-bottom: 32px;">
+    <span>⚠️</span>
+    <span><strong>Antes de crear una organización nueva, siempre buscá si ya existe.</strong> Buscá el nombre en la lupa arriba a la derecha. Si ya está cargada, usá esa ficha — no dupliques.</span>
+  </div>
+
+  <hr class="divider">
+  <div class="section-label">Proceso paso a paso</div>
+
+  <div class="steps">
+
+    <!-- PASO 1 -->
+    <div class="step">
+      <div class="step-left"><div class="step-num">1</div><div class="step-line"></div></div>
+      <div class="step-content">
+        <div class="step-title">Ir a Organizaciones</div>
+        <div class="step-desc">En el menú izquierdo de Pipedrive hacés clic en el ícono de personas 👥 — dice <strong>Contactos</strong>. Dentro del submenú seleccionás <strong>Organizaciones</strong>.</div>
+      </div>
+    </div>
+
+    <!-- PASO 2 -->
+    <div class="step">
+      <div class="step-left"><div class="step-num">2</div><div class="step-line"></div></div>
+      <div class="step-content">
+        <div class="step-title">Clic en "+ Organización"</div>
+        <div class="step-desc">Arriba a la izquierda, hacés clic en el botón verde <strong>+ Organización</strong>. Se abre el formulario para completar.</div>
+        <div class="note">
+          <span class="note-icon">💡</span>
+          <span>Si llegás desde un prospecto que se convirtió, Pipedrive puede pre-llenar algunos campos automáticamente. Verificá que estén correctos antes de guardar.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASO 3 -->
+    <div class="step">
+      <div class="step-left"><div class="step-num">3</div><div class="step-line"></div></div>
+      <div class="step-content">
+        <div class="step-title">Completás los campos del formulario</div>
+        <div class="step-desc">Completás los campos obligatorios y los opcionales que tengas disponibles. Todo lo que no está en esta tabla se ignora.</div>
+        <div class="fields">
+          <div class="fields-header">Campos del formulario de organización</div>
+          <div class="field-row">
+            <div class="field-name">Nombre <span class="req">oblig.</span></div>
+            <div class="field-val">Razón social o nombre comercial de la empresa.<br><span style="font-size:12px;color:#8A8A8A">Ej: Hattrick Energy SRL / Agropapas SAS</span></div>
+          </div>
+          <div class="field-row">
+            <div class="field-name">Etiquetas <span class="req">oblig.</span></div>
+            <div class="field-val">
+              El sector de la empresa:
+              <div class="sector-pills">
+                <span class="sector-pill">Petrolero</span>
+                <span class="sector-pill">Agropecuario</span>
+                <span class="sector-pill">Minero</span>
+                <span class="sector-pill">Industrial</span>
+              </div>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field-name">Dirección <span class="opt">si tenés</span></div>
+            <div class="field-val">Dirección de facturación del cliente. Si tiene varias direcciones de entrega, las anotás en Notas (ver paso 4).</div>
+          </div>
+          <div class="field-row">
+            <div class="field-name">Propietario <span class="req">oblig.</span></div>
+            <div class="field-val">Seleccionás <strong>Georgina</strong> como propietaria de los clientes que manejás vos.</div>
+          </div>
+          <div class="field-row">
+            <div class="field-name">Sitio web <span class="skip">ignorar</span></div>
+            <div class="field-val" style="color:#aaa">No completar</div>
+          </div>
+          <div class="field-row">
+            <div class="field-name">LinkedIn <span class="skip">ignorar</span></div>
+            <div class="field-val" style="color:#aaa">No completar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASO 4 -->
+    <div class="step">
+      <div class="step-left"><div class="step-num">4</div><div class="step-line"></div></div>
+      <div class="step-content">
+        <div class="step-title">Guardás y completás la ficha</div>
+        <div class="step-desc">Hacés clic en <strong>Guardar</strong>. Se abre la ficha del cliente. Desde acá completás el teléfono, mail y las notas de entrega.</div>
+
+        <div class="fields">
+          <div class="fields-header">Qué completar dentro de la ficha</div>
+          <div class="field-row">
+            <div class="field-name">+ Persona <span class="req">oblig.</span></div>
+            <div class="field-val">Agregás el contacto principal: nombre, teléfono WhatsApp y mail.</div>
+          </div>
+          <div class="field-row">
+            <div class="field-name">Notas <span class="req">oblig.</span></div>
+            <div class="field-val">Escribís las direcciones de entrega y cualquier dato operativo importante del cliente.</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 16px;">
+          <div class="section-label" style="margin-bottom: 8px;">Cómo manejar las direcciones de entrega</div>
+          <div class="dir-grid">
+            <div class="dir-card">
+              <div class="dir-card-title">Dirección de facturación</div>
+              <p>Va en el campo <strong>Dirección</strong> del formulario.</p>
+              <div class="where">Campo: Dirección</div>
+            </div>
+            <div class="dir-card">
+              <div class="dir-card-title">Direcciones de entrega</div>
+              <p>Van en <strong>Notas</strong> dentro de la ficha. Podés poner más de una.</p>
+              <div class="where">Sección: Notas</div>
+            </div>
+          </div>
+          <div class="note-example">
+            <div class="note-example-title">Ejemplo de nota de entrega bien escrita</div>
+            <p>"Entrega 1 (campo principal): Ruta 40 km 2300, portón azul — coordinan con Juan al llegar.<br>Entrega 2 (campo nuevo): camino de tierra 8km desde ruta, preguntar por el encargado Roberto."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASO 5 -->
+    <div class="step">
+      <div class="step-left"><div class="step-num">5</div><div class="step-line"></div></div>
+      <div class="step-content">
+        <div class="step-title">Verificás que todo esté completo</div>
+        <div class="step-desc">Antes de cerrar la ficha, revisás que tenga al menos estos datos cargados:</div>
+        <div class="fields">
+          <div class="fields-header">Checklist mínimo por organización</div>
+          <div class="field-row" style="display:block; padding:10px 16px; font-size:13px; color:var(--ink-mid); line-height:1.8;">
+            ☐ &nbsp;Nombre correcto (razón social o nombre comercial)<br>
+            ☐ &nbsp;Etiqueta de sector asignada<br>
+            ☐ &nbsp;Al menos un contacto con nombre y teléfono WhatsApp<br>
+            ☐ &nbsp;Nota con dirección de entrega (aunque sea aproximada)
+          </div>
+        </div>
+        <div class="alert">
+          <span>⚠️</span>
+          <span>Si no tenés todos los datos en el momento, cargás lo que tengas y completás después. Lo importante es que la organización exista antes de crear el primer trato.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+
+  <div class="rule-card">
+    <h3>Reglas rápidas para no olvidar</h3>
+    <ul class="rule-list">
+      <li>Siempre buscá antes de crear. Si el cliente ya existe, usá esa ficha.</li>
+      <li>Una organización por empresa. Aunque tengas 3 contactos de la misma empresa, es una sola ficha.</li>
+      <li>Las direcciones de entrega van en Notas, no en el campo Dirección.</li>
+      <li>El propietario tiene que ser Georgina, no Mariana, para los clientes que manejás vos.</li>
+      <li>Ante cualquier duda, escribile a Mariana antes de improvisar.</li>
+    </ul>
+  </div>
+
+</div>
+
+<div class="footer">
+  Torian Group · Canal Agro · Instructivo 2 de 3 · Interno · No distribuir
+</div>
+
+</body>
+</html>

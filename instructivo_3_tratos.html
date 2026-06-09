@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instructivo 3 · Cómo registrar un pedido · Canal Agro</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --green-dark: #0A3D2B;
+    --green-mid: #1A6B47;
+    --green-bright: #2ECC87;
+    --green-pale: #E8F7F0;
+    --amber: #F5A623;
+    --amber-pale: #FEF6E4;
+    --ink: #1C1C1C;
+    --ink-mid: #4A4A4A;
+    --ink-light: #8A8A8A;
+    --paper: #FAFAF7;
+    --paper-warm: #F3F0E8;
+    --border: #E2DDD4;
+    --step-size: 40px;
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); }
+
+  .header { background: var(--green-dark); padding: 32px 40px 28px; position: relative; overflow: hidden; }
+  .header::after { content: ''; position: absolute; right: -60px; top: -60px; width: 260px; height: 260px; border-radius: 50%; border: 40px solid rgba(46,204,135,0.08); }
+  .header-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--green-bright); margin-bottom: 10px; }
+  .header h1 { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 600; color: #fff; line-height: 1.2; max-width: 500px; position: relative; z-index: 1; }
+  .header h1 em { font-style: italic; color: var(--green-bright); }
+  .header-sub { margin-top: 8px; font-size: 13px; color: rgba(255,255,255,0.5); position: relative; z-index: 1; }
+
+  .banner { background: var(--amber-pale); border-left: 4px solid var(--amber); padding: 14px 40px; font-size: 13px; color: var(--ink-mid); display: flex; align-items: center; gap: 10px; }
+  .banner strong { color: var(--ink); }
+
+  .main { max-width: 720px; margin: 0 auto; padding: 40px 24px 60px; }
+  .section-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 20px; }
+
+  /* FLUJO */
+  .flow { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+  .flow-box { background: #fff; border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 16px; font-size: 12px; font-weight: 500; color: var(--ink-mid); text-align: center; line-height: 1.3; min-width: 100px; }
+  .flow-box.done { background: var(--green-pale); color: var(--green-mid); border-color: #B8E8D4; }
+  .flow-box.active { background: var(--green-dark); color: #fff; border-color: var(--green-dark); }
+  .flow-arrow { color: var(--border); font-size: 18px; padding: 0 2px; }
+
+  .diagram-wrap { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 12px; }
+  .diagram-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 16px; }
+
+  /* PIPELINE VISUAL */
+  .pipeline { display: flex; align-items: stretch; gap: 0; margin: 16px 0; overflow-x: auto; }
+  .stage { flex: 1; min-width: 90px; }
+  .stage-inner { border: 1.5px solid var(--border); border-right: none; padding: 10px 12px; background: #fff; height: 100%; }
+  .stage:last-child .stage-inner { border-right: 1.5px solid var(--border); border-radius: 0 8px 8px 0; }
+  .stage:first-child .stage-inner { border-radius: 8px 0 0 8px; }
+  .stage-inner.active { background: var(--green-dark); border-color: var(--green-dark); }
+  .stage-num { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--ink-light); margin-bottom: 4px; }
+  .stage-inner.active .stage-num { color: rgba(255,255,255,0.5); }
+  .stage-name { font-size: 11px; font-weight: 600; color: var(--ink); line-height: 1.3; }
+  .stage-inner.active .stage-name { color: #fff; }
+  .stage-days { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--ink-light); margin-top: 4px; }
+  .stage-inner.active .stage-days { color: rgba(255,255,255,0.5); }
+
+  /* STEPS */
+  .steps { display: flex; flex-direction: column; }
+  .step { display: grid; grid-template-columns: var(--step-size) 1fr; gap: 0 20px; }
+  .step-left { display: flex; flex-direction: column; align-items: center; }
+  .step-num { width: var(--step-size); height: var(--step-size); border-radius: 50%; background: var(--green-dark); color: #fff; font-family: 'DM Mono', monospace; font-size: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 1; }
+  .step-line { width: 2px; flex: 1; background: var(--border); }
+  .step:last-child .step-line { display: none; }
+  .step-content { padding-bottom: 32px; }
+  .step-title { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 600; color: var(--ink); margin-bottom: 6px; padding-top: 8px; line-height: 1.3; }
+  .step-desc { font-size: 14px; color: var(--ink-mid); line-height: 1.6; margin-bottom: 14px; }
+
+  /* FIELDS */
+  .fields { background: #fff; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 12px; }
+  .fields-header { background: var(--paper-warm); padding: 8px 16px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); border-bottom: 1px solid var(--border); }
+  .field-row { display: grid; grid-template-columns: 160px 1fr; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .field-row:last-child { border-bottom: none; }
+  .field-name { padding: 10px 16px; font-family: 'DM Mono', monospace; font-size: 12px; color: var(--green-mid); background: var(--green-pale); border-right: 1px solid var(--border); display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+  .field-val { padding: 10px 16px; color: var(--ink-mid); line-height: 1.5; }
+  .req { display: inline-block; background: var(--green-dark); color: #fff; font-family: 'DM Mono', monospace; font-size: 9px; padding: 2px 6px; border-radius: 3px; text-transform: uppercase; }
+  .opt { display: inline-block; background: var(--border); color: var(--ink-light); font-family: 'DM Mono', monospace; font-size: 9px; padding: 2px 6px; border-radius: 3px; text-transform: uppercase; }
+  .skip { display: inline-block; background: #FFE8E8; color: #C0392B; font-family: 'DM Mono', monospace; font-size: 9px; padding: 2px 6px; border-radius: 3px; text-transform: uppercase; }
+
+  .note { background: var(--amber-pale); border: 1px solid #F5D48A; border-radius: 10px; padding: 14px 18px; font-size: 13px; color: var(--ink-mid); line-height: 1.6; display: flex; gap: 12px; align-items: flex-start; margin-top: 12px; }
+  .note-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .alert { background: #FFF0F0; border: 1px solid #FFBBBB; border-radius: 10px; padding: 14px 18px; font-size: 13px; color: var(--ink-mid); line-height: 1.6; display: flex; gap: 12px; align-items: flex-start; margin-top: 12px; }
+
+  /* ETAPAS DETALLE */
+  .stages-detail { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+  .stage-row { display: grid; grid-template-columns: 28px 140px 1fr; gap: 0 12px; align-items: start; }
+  .stage-row-num { width: 28px; height: 28px; border-radius: 50%; background: var(--green-pale); color: var(--green-mid); font-family: 'DM Mono', monospace; font-size: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 500; margin-top: 2px; }
+  .stage-row-name { font-size: 13px; font-weight: 600; color: var(--ink); padding-top: 4px; }
+  .stage-row-desc { font-size: 13px; color: var(--ink-mid); line-height: 1.5; padding-top: 4px; }
+
+  /* TITULO FORMAT */
+  .title-format { background: var(--green-dark); border-radius: 10px; padding: 16px 20px; margin-top: 12px; }
+  .title-format-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green-bright); margin-bottom: 8px; }
+  .title-format-formula { font-family: 'DM Mono', monospace; font-size: 14px; color: #fff; margin-bottom: 12px; }
+  .title-examples { display: flex; flex-direction: column; gap: 6px; }
+  .title-example { font-size: 12px; color: rgba(255,255,255,0.7); font-family: 'DM Mono', monospace; }
+  .title-example span { color: var(--green-bright); }
+
+  /* CIERRE */
+  .close-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  .close-card { border-radius: 10px; padding: 16px; border: 1.5px solid; }
+  .close-card.ganado { background: var(--green-pale); border-color: #B8E8D4; }
+  .close-card.perdido { background: #FFF0F0; border-color: #FFBBBB; }
+  .close-card-title { font-weight: 600; font-size: 13px; margin-bottom: 6px; }
+  .close-card.ganado .close-card-title { color: var(--green-dark); }
+  .close-card.perdido .close-card-title { color: #C0392B; }
+  .close-card p { font-size: 12px; color: var(--ink-mid); line-height: 1.5; }
+
+  .rule-card { background: var(--green-dark); border-radius: 12px; padding: 24px 28px; color: #fff; margin-top: 8px; }
+  .rule-card h3 { font-family: 'Fraunces', serif; font-size: 16px; font-weight: 600; color: var(--green-bright); margin-bottom: 14px; }
+  .rule-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .rule-list li { display: flex; gap: 10px; font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.8); }
+  .rule-list li::before { content: '→'; color: var(--green-bright); flex-shrink: 0; font-family: 'DM Mono', monospace; }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+  .doc-nav { display: flex; gap: 8px; margin-bottom: 32px; flex-wrap: wrap; }
+  .doc-pill { padding: 6px 14px; border-radius: 20px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; border: 1.5px solid; }
+  .doc-pill.done { background: var(--green-pale); color: var(--green-mid); border-color: #B8E8D4; }
+  .doc-pill.current { background: var(--green-dark); color: #fff; border-color: var(--green-dark); }
+
+  .footer { text-align: center; padding: 24px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: var(--ink-light); border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">Canal Agro · Torian Group · Instructivo 3 de 3</div>
+  <h1>Cómo registrar un pedido<br>y moverlo por el <em>embudo</em></h1>
+  <div class="header-sub">Para Georgina · Embudo Canal Agro - Pedidos · Actualizado junio 2026</div>
+</div>
+
+<div class="banner">
+  <span>⚡</span>
+  <span><strong>Regla de oro:</strong> todo pedido que llega se carga en Pipedrive <strong>el mismo día</strong>, antes de que termine la jornada. Sin excepciones.</span>
+</div>
+
+<div class="main">
+
+  <div class="doc-nav">
+    <span class="doc-pill done">1 · Prospectos ✓</span>
+    <span class="doc-pill done">2 · Organizaciones ✓</span>
+    <span class="doc-pill current">3 · Tratos y pedidos</span>
+  </div>
+
+  <div class="section-label">Dónde vivís en este instructivo</div>
+  <div class="diagram-wrap">
+    <div class="diagram-title">Flujo completo Canal Agro</div>
+    <div class="flow">
+      <div class="flow-box done">Prospecto<br><span style="font-size:10px">Investigás</span></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-box done">Organización<br><span style="font-size:10px">Cliente cargado</span></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-box active">Trato<br><span style="font-size:10px">Pedido real</span></div>
+      <div class="flow-arrow">›</div>
+      <div class="flow-box active">Cobrado<br><span style="font-size:10px">Cerrado</span></div>
+    </div>
+  </div>
+
+  <!-- PIPELINE VISUAL -->
+  <div class="diagram-wrap" style="margin-top: 16px;">
+    <div class="diagram-title">El embudo Canal Agro - Pedidos · 6 etapas</div>
+    <div class="pipeline">
+      <div class="stage">
+        <div class="stage-inner active">
+          <div class="stage-num">01</div>
+          <div class="stage-name">Pedido recibido</div>
+          <div class="stage-days">1 día</div>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-inner">
+          <div class="stage-num">02</div>
+          <div class="stage-name">Cotización enviada</div>
+          <div class="stage-days">3 días</div>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-inner">
+          <div class="stage-num">03</div>
+          <div class="stage-name">Pedido confirmado</div>
+          <div class="stage-days">3 días</div>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-inner">
+          <div class="stage-num">04</div>
+          <div class="stage-name">Entregado</div>
+          <div class="stage-days">2 días</div>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-inner">
+          <div class="stage-num">05</div>
+          <div class="stage-name">Facturado</div>
+          <div class="stage-days">10 días</div>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-inner">
+          <div class="stage-num">06</div>
+          <div class="stage-name">Cobrado</div>
+          <div class="stage-days">—</div>
+        </div>
+      </div>
+    </div>
+    <div style="font-size:11px; color: var(--ink-light); margin-top: 8px; font-family: 'DM Mono', monospace;">Los días indican cuánto tiempo puede estar en esa etapa antes de que Pipedrive te avise que está estancado.</div>
+  </div>
+
+  <hr class="divider">
+  <div class="section-label">Proceso paso a paso</div>
+
+  <div class="steps">
+
+    <!-- PASO 1 -->
+    <div class="step">
+      <div class="step-left"><div class="step-num">1</div><div class="step-line"></div></div>
+      <div class="step-content">
+        <div class="step-title">Abrís la ficha del cliente</div>
+        <div class="step-desc">En el menú izquierdo, hacés clic en <strong>Contactos → Organizaciones</strong>. Buscás el cliente que hizo el pedido y abrís su ficha.</div>
+        <div class="alert">
+          <span>⚠️</span>
+          <span>Si el cliente es nuevo y no existe como Organización todavía, primero lo creás siguiendo el <strong>Instructivo 2</strong>. Nunca creés un trato sin organización.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASO 2 -->
+    <div class="step">
+      <div class="step-left"><div class="step-num">2</div><div class="step-line"></div></div>
+      <div class="step-content">
+        <div class="step-title">Creás el trato desde la ficha</div>
+        <div class="step-desc">Dentro de la ficha del cliente, hacés clic en el botón verde <strong>+ Trato</strong> arriba a la derecha. Se abre el formulario del trato.</div>
+        <div class="note">
+          <span class="note-icon">💡</span>
+          <span>Cada pedido es un trato separado, aunque sea del mismo cliente de siempre. Así podés ver el historial completo de lo que compró.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASO 3 -->
+    <div class="step">
+      <div class="step-left"><div class="step-num">3</div><div class="step-line"></div></div>
+      <div class="step-content">
+        <div class="step-title">Completás el formulario del trato</div>
+        <div class="step-desc">Completás los campos del pedido. El título es lo más importante — si está mal escrito, después no podés filtrar ni buscar.</div>
+
+        <div class="title-format">
+          <div class="title-format-label">Formato del título — siempre igual</div>
+          <div class="title-format-formula">Cliente · Producto · Mes Año</div>
+          <div class="title-examples">
+            <div class="title-example"><span>✓</span> Pescio · Q Diesel · Jun 26</div>
+            <div class="title-example"><span>✓</span> Hattrick · X10 · Jun 26</div>
+            <div class="title-example"><span>✓</span> Agropapas · Castrol 15W40 · Jul 26</div>
+            <div class="title-example" style="color: rgba(255,255,255,0.35)"><span style="color:#E84040">✗</span> Pescio gasoil junio (sin formato)</div>
+          </div>
+        </div>
+        <div style="margin-top:8px; font-size:12px; color: var(--ink-light); font-family:'DM Mono',monospace;">El punto medio · se escribe con Option + Shift + 9 en Mac.</div>
+
+        <div class="fields" style="margin-top: 16px;">
+          <div class="fields-header">Campos del formulario de trato</div>
+          <div class="field-row">
+            <div class="field-name">Título <span class="req">oblig.</span></div>
+            <div class="field-val">Formato: <strong>Cliente · Producto · Mes Año</strong></div>
+          </div>
+          <div class="field-row">
+            <div class="field-name">Organización <span class="req">oblig.</span></div>
+            <div class="field-val">Ya debería estar seleccionado automáticamente.</div>
+          </div>
+          <div class="field-row">
+            <div class="field-name">Valor <span class="req">oblig.</span></div>
+            <div class="field-val">Monto estimado en pesos. Si no sabés el exacto, ponés una estimación y después lo corregís.</div>
+          </div>
+          <div class="field-row">
+            <div class="field-name">Embudo <span class="req">oblig.</span></div>
+            <div class="field-val">Tiene que decir <strong>Canal Agro - Pedidos</strong>. Si dice otro, lo cambiás.</div>
+          </div>
+          <div class="field-row">
+            <div class="field-name">Fecha de cierre <span class="req">oblig.</span></div>
+            <div class="field-val">Fecha estimada en que se va a cobrar el pedido.</div>
+          </div>
+          <div class="field-row">
+            <div class="field-name">Propietario <span class="req">oblig.</span></div>
+            <div class="field-val">Seleccionás <strong>Georgina</strong>.</div>
+          </div>
+          <div class="field-row">
+            <div class="field-name">Probabilidad <span class="skip">ignorar</span></div>
+            <div class="field-val" style="color:#aaa">No completar</div>
+          </div>
+          <div class="field-row">
+            <div class="field-name">Canal de la fuente <span class="skip">ignorar</span></div>
+            <div class="field-val" style="color:#aaa">No completar</div>
+          </div>
+          <div class="field-row">
+            <div class="field-name">Industria <span class="skip">ignorar</span></div>
+            <div class="field-val" style="color:#aaa">No completar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASO 4 -->
+    <div class="step">
+      <div class="step-left"><div class="step-num">4</div><div class="step-line"></div></div>
+      <div class="step-content">
+        <div class="step-title">Guardás y escribís la nota inicial</div>
+        <div class="step-desc">Hacés clic en <strong>Guardar</strong>. Se abre la ficha del trato. Inmediatamente vas a la pestaña <strong>Notas</strong> y escribís lo que pasó: cómo llegó el pedido, qué pidió el cliente, si hay condiciones especiales.</div>
+        <div class="fields">
+          <div class="fields-header">Ejemplos de notas bien escritas</div>
+          <div class="field-row" style="display:block; padding:10px 16px; font-size:13px; color:var(--ink-mid); line-height:1.6;">
+            ✓ <em>"WA del 9/6. Juan pide 8.000L de Q Diesel para el 15/6. Entrega en campo principal. Precio a confirmar."</em>
+          </div>
+          <div class="field-row" style="display:block; padding:10px 16px; font-size:13px; color:var(--ink-mid); line-height:1.6;">
+            ✓ <em>"Llamó el encargado el 9/6. Consulta por 20 tambores Castrol 15W40. Le envío cotización mañana."</em>
+          </div>
+          <div class="field-row" style="display:block; padding:10px 16px; font-size:13px; color:var(--ink-mid); line-height:1.6;">
+            ✓ <em>"Pedido urgente. Necesitan entrega antes del viernes. Coordinado con chofer para el jueves."</em>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASO 5 -->
+    <div class="step">
+      <div class="step-left"><div class="step-num">5</div><div class="step-line"></div></div>
+      <div class="step-content">
+        <div class="step-title">Movés el trato por el embudo a medida que avanza</div>
+        <div class="step-desc">Cada vez que el pedido avanza, arrastrás el trato a la etapa siguiente. También podés hacer clic en la barra de etapas dentro del trato. <strong>Siempre dejás una nota cuando lo movés.</strong></div>
+
+        <div class="stages-detail">
+          <div class="stage-row">
+            <div class="stage-row-num">01</div>
+            <div class="stage-row-name">Pedido recibido</div>
+            <div class="stage-row-desc">Acá arranca todo trato nuevo. El pedido llegó y está registrado.</div>
+          </div>
+          <div class="stage-row">
+            <div class="stage-row-num">02</div>
+            <div class="stage-row-name">Cotización enviada</div>
+            <div class="stage-row-desc">Le enviaste el precio al cliente. Nota: "Cotización enviada por WA. Precio: $X por litro."</div>
+          </div>
+          <div class="stage-row">
+            <div class="stage-row-num">03</div>
+            <div class="stage-row-name">Pedido confirmado</div>
+            <div class="stage-row-desc">El cliente aceptó. Coordinaste la entrega con el chofer. Nota: "Cliente confirmó. Entrega coordinada para el [fecha]."</div>
+          </div>
+          <div class="stage-row">
+            <div class="stage-row-num">04</div>
+            <div class="stage-row-name">Entregado</div>
+            <div class="stage-row-desc">El chofer hizo la entrega. Hay remito o factura firmada. Nota: "Entregado el [fecha]. Remito Nº [número]."</div>
+          </div>
+          <div class="stage-row">
+            <div class="stage-row-num">05</div>
+            <div class="stage-row-name">Facturado</div>
+            <div class="stage-row-desc">Se emitió la factura. Nota: "Factura Nº [número] emitida el [fecha]."</div>
+          </div>
+          <div class="stage-row">
+            <div class="stage-row-num">06</div>
+            <div class="stage-row-name">Cobrado</div>
+            <div class="stage-row-desc">Entró el pago. Marcás el trato como <strong>Ganado</strong>. Nota: "Cobrado el [fecha]. Transferencia confirmada."</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASO 6 -->
+    <div class="step">
+      <div class="step-left"><div class="step-num">6</div><div class="step-line"></div></div>
+      <div class="step-content">
+        <div class="step-title">Cerrás el trato como Ganado o Perdido</div>
+        <div class="step-desc">Cuando llegás a Cobrado, hacés clic en el botón verde <strong>Ganado</strong> arriba a la derecha. Si el pedido se cae por cualquier motivo, hacés clic en <strong>Perdido</strong> y escribís el motivo en la nota.</div>
+        <div class="close-cards">
+          <div class="close-card ganado">
+            <div class="close-card-title">✓ Ganado</div>
+            <p>Pago recibido. Trato cerrado exitosamente. El cliente queda en el historial con el monto y el producto.</p>
+          </div>
+          <div class="close-card perdido">
+            <div class="close-card-title">✗ Perdido</div>
+            <p>El pedido se canceló o el cliente eligió otro proveedor. Escribís el motivo — esa info vale para mejorar.</p>
+          </div>
+        </div>
+        <div class="note" style="margin-top:12px">
+          <span class="note-icon">💡</span>
+          <span>Un trato perdido no es un fracaso — es información. Si varios se pierden por el mismo motivo (precio, demora, falta de stock), eso hay que reportárselo a Mariana.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+
+  <div class="rule-card">
+    <h3>Reglas rápidas para no olvidar</h3>
+    <ul class="rule-list">
+      <li>Cada pedido = un trato. Aunque sea el mismo cliente tres veces en el mes.</li>
+      <li>Título siempre con el formato: Cliente · Producto · Mes Año. Sin variaciones.</li>
+      <li>Nota obligatoria al crear el trato y cada vez que lo movés de etapa.</li>
+      <li>Si no sabés el monto exacto, ponés una estimación. Después lo corregís.</li>
+      <li>Todo trato se carga el mismo día que llega el pedido, no al día siguiente.</li>
+      <li>Ante cualquier duda, escribile a Mariana antes de improvisar.</li>
+    </ul>
+  </div>
+
+</div>
+
+<div class="footer">
+  Torian Group · Canal Agro · Instructivo 3 de 3 · Interno · No distribuir
+</div>
+
+</body>
+</html>
